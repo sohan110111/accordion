@@ -14,3 +14,81 @@
         <div class="accordion-content">Content 3</div>
     </div>
 </div>
+<style>
+    .accordion {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* Three columns layout */
+    gap: 10px; /* Spacing between columns */
+    max-width: 1200px; /* Limit container width */
+    margin: auto; /* Center container */
+}
+
+.accordion-item {
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    overflow: hidden;
+    background-color: #fff;
+}
+
+.accordion-header {
+    padding: 10px;
+    background: #f4f4f4;
+    cursor: pointer;
+    font-weight: bold;
+    border-bottom: 1px solid #ddd;
+}
+
+.accordion-content {
+    padding: 10px;
+    display: none;
+    overflow: hidden;
+    max-height: 0;
+    transition: max-height 0.3s ease-out;
+}
+
+.accordion-content.active {
+    display: block;
+    max-height: 200px; /* Adjust based on your content's maximum height */
+}
+
+</style>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+    var headers = document.querySelectorAll('.accordion-header');
+
+    headers.forEach(function(header) {
+        header.addEventListener('click', function() {
+            var content = this.nextElementSibling;
+            
+            // Check if the clicked content is already active
+            var isActive = content.classList.contains('active');
+            
+            // Close all contents
+            var allContents = document.querySelectorAll('.accordion-content');
+            allContents.forEach(function(item) {
+                item.classList.remove('active');
+                item.style.maxHeight = null;
+            });
+
+            // Only expand the clicked content if it wasn't already active
+            if (!isActive) {
+                content.classList.add('active');
+                content.style.maxHeight = content.scrollHeight + "px";
+            }
+        });
+    });
+
+    // Optional: Close the accordion when clicking outside
+    document.addEventListener('click', function(event) {
+        if (!event.target.matches('.accordion-header')) {
+            var openContents = document.querySelectorAll('.accordion-content.active');
+            openContents.forEach(function(item) {
+                item.classList.remove('active');
+                item.style.maxHeight = null;
+            });
+        }
+    });
+});
+
+</script>
